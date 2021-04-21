@@ -9,6 +9,7 @@ export default StyleSheet.create({
   },
   inputStyle : {
     backgroundColor: Color.ELECTRIC,
-    borderRadius: 20
+    borderRadius: 20,
+    color: Color.CREAM
   },
 })
