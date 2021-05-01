@@ -1,35 +1,41 @@
 import React, { Component, useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import Color from '../config/Color';
-import SearchBarStyle from '../styles/SearchBarStyle';
-import ItemSeparatorView from '../components/ItemSeparatorView';
-import ItemView from '../components/ItemView';
+import { SearchBar, Icon } from 'react-native-elements';
+import SearchSuggestionItemView from './SearchSuggestionItemView';
+import * as GlobalVariables from '../GlobalVariables';
+import SearchViewStytle from '../styles/SearchViewStytle';
 
 export default class SearchView extends Component {
 
-
   constructor(props) {
     super(props);
-    
     this.state = {
       search: '',
       results: [],
     }
-    this.baseUrl = 'https://www.theaudiodb.com';
-    this.endPoint = '/api/v1/json/1/search.php?s=';
-
   }
 
-  
-  componentDidMount() {  
-  }
-
-  
+  // updates this.state.search string
   updateSearch = (search) => {
     this.setState( {search} );
-    this.setState
-    fetch( this.baseUrl + this.endPoint + search )
+  }
+
+  // fetches artist if search is
+  // different then the previous state
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.search !== this.state.search) {
+      if ( this.state.search !== '') {
+        this.fetchArtist();
+      }
+    }
+  }
+
+  // fetches artist object using given input( this.state.search )
+  fetchArtist() {
+    fetch( 
+      GlobalVariables.baseUrl + GlobalVariables.endPoints.artistSearch 
+      + this.state.search
+    )
       .then( body => body.json() )
       .then( result => {
         let artists = result['artists'];
@@ -42,32 +48,57 @@ export default class SearchView extends Component {
       });
   }
 
-  mapResults( attribute ) {
-    return this.state.results.map( artist => artist[attribute] );
+  clearResults = () => {
+    this.setState( {results: []} );
   }
 
+  // displays search results and
+  // if result is clicked, the found artist
+  // object is passed to SearchResultScreen
+  renderItem( item ) {
+    return(
+      <SearchSuggestionItemView 
+        navigation = { this.props.navigation } 
+        item = { item } 
+      />
+    );
+  }
 
+  // dipslays SearchBar & Search results
   render() {
     const { search } = this.state;
-    
     return (
-      <View>
-        <SearchBar
-          placeholder = '   Search music...'
-          onChangeText = { this.updateSearch }
-          value = { search }
-          containerStyle = { SearchBarStyle.containerStyle }
-          inputStyle = { SearchBarStyle.inputStyle }
-          inputContainerStyle = { SearchBarStyle.containerStyle }
-          placeholderTextColor= { Color.CREAM }
+      <View style={SearchViewStytle.viewStyle}>
+        <Icon
+          name='music-clef-treble'
+          type='material-community'
+          color={SearchViewStytle.iconColor}
+          size={SearchViewStytle.musicIconSize}
         />
+        <SearchBar
+          placeholder = 'Search Artist...'
+          onChangeText = { this.updateSearch }
+          onClear = { this.clearResults }
+          value = { search }
+          containerStyle = { 
+            SearchViewStytle.searchBarStyle.containerStyle
+          }
+          inputStyle = { 
+            SearchViewStytle.searchBarStyle.inputStyle
+          }
+          inputContainerStyle = { 
+            SearchViewStytle.searchBarStyle.inputContainerStyle
+          }
+          placeholderTextColor= { 
+            SearchViewStytle.searchBarStyle.placeHolderColor
+          }
+          searchIcon={{color: SearchViewStytle.searchBarStyle.searchIconColor}}
+          clearIcon={{color: SearchViewStytle.searchBarStyle.clearIconColor}}
+       />
         <FlatList
-          data={ this.mapResults( 'strArtist' ) }
+          data={ this.state.results }
           keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem= { ({item}) => 
-            <ItemView navigation = { this.props.navigation } item = { item } 
-          />}
+          renderItem= { ({item}) => this.renderItem(item)}
         />
       </View>
     );

@@ -1,9 +1,15 @@
-import { StyleSheet } from 'react-native';
 import Color from '../config/Color';
+import GlobalStyles from './GlobalStyles';
 
-export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Color.MAASTRICHT,
-  }
-})
+export default {
+  viewStyle: [
+    GlobalStyles.Flex, GlobalStyles.BackgroundColor
+  ],
+  iconColor: Color.FOREGROUND,
+  iconReversedColor: Color.SECONDARY_FOREGROUND,
+  iconContainerStyle: [
+    GlobalStyles.AlignSelf, 
+    GlobalStyles.MarginTop75Percent
+  ],
+  iconSize: 35,
+}

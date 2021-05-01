@@ -1,6 +1,10 @@
+import SaposLemansTheme from "./SaposLemansTheme";
+import SaposTheme from "./SaposTheme";
+
+// default color is setted to SaposTheme.js
 export default {
-  MAASTRICHT: '#081B33',
-  ELECTRIC: '#506680',
-  SALMON: '#E46D6A',
-  CREAM: '#FEFFD6'
+  BACKGROUND: SaposTheme.BACKGROUND,
+  FOREGROUND: SaposTheme.FOREGROUND,
+  SECONDARY_BACKGROUND: SaposTheme.SECONDARY_BACKGROUND,
+  SECONDARY_FOREGROUND: SaposTheme.SECONDARY_FOREGROUND
 }
