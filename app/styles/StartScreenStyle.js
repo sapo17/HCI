@@ -9,7 +9,7 @@ export default {
   iconReversedColor: Color.SECONDARY_FOREGROUND,
   iconContainerStyle: [
     GlobalStyles.AlignSelf, 
-    GlobalStyles.MarginTop75Percent
+    GlobalStyles.MarginTop65Percent
   ],
   iconSize: 35,
 }

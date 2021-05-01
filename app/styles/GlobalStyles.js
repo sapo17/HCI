@@ -62,8 +62,8 @@ export default StyleSheet.create({
   AlignItemFlexEnd: {
     alignItems: 'flex-end'
   },
-  MarginTop75Percent: {
-    marginTop: '75%'
+  MarginTop65Percent: {
+    marginTop: '65%'
   },
   Width: {
     width: '80%'
